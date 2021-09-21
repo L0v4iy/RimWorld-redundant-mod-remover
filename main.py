@@ -43,25 +43,56 @@ def get_mod_name(mod_path):
         print("No metadata file in '" + naming_file_path + "'")
         return
     about_reader = ET.parse(naming_file_path)
-    res = about_reader.find("packageId").text
-    return res
+    package_name = about_reader.find("packageId")
+    if package_name is not None:
+        return package_name.text.lower()
+
+    print("Mod '" + naming_file_path + "' is undefined")
 
 
 enabled = get_enabled_mods(config.mod_config_path)
-
 mods = get_available_mod_paths(config.mod_path)
+
+
+def show_enabled():
+    print("\nEnabled:")
+    for en in enabled:
+        print(" " + en)
+
+
 # cleanup
+show_enabled()
+all_mods = []
+undefined = []
 redundant = []
-print("\nattempt to remove:")
+print("\nAttempt to remove:")
 for modPath in mods:
     mod_name = get_mod_name(modPath)
-
-    if mod_name not in enabled:
+    all_mods.append(mod_name)
+    if mod_name is None:
+        undefined.append(modPath)
+    elif mod_name not in enabled:
         redundant.append(modPath)
         print(" " + mod_name)
-print("\nremove redundant mods?")
+
+# unfound
+print("\nUnfound mods:")
+unfound = []
+for e in enabled:
+    if e not in all_mods:
+        print(" " + e)
+        unfound.append(e)
+
+print("\nRemove redundant mods?")
 sec = input("y/n\n")
-if sec is "y":
+if sec == "y":
     for redundant_path in redundant:
         shutil.rmtree(config.mod_path + "\\" + redundant_path)
+
+undefinedPath = config.undefined_path
+for u in undefined:
+    if not os.path.isdir(undefinedPath):
+        os.makedirs(undefinedPath)
+    shutil.move(config.mod_path + "\\" + u, undefinedPath)
+print("Undefined mods moved to " + undefinedPath)
 print("done")
