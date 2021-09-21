@@ -89,10 +89,10 @@ if sec == "y":
     for redundant_path in redundant:
         shutil.rmtree(config.mod_path + "\\" + redundant_path)
 
-undefinedPath = config.undefined_path
-for u in undefined:
-    if not os.path.isdir(undefinedPath):
-        os.makedirs(undefinedPath)
-    shutil.move(config.mod_path + "\\" + u, undefinedPath)
-print("Undefined mods moved to " + undefinedPath)
-print("done")
+    undefinedPath = config.undefined_path
+    for u in undefined:
+        if not os.path.isdir(undefinedPath):
+            os.makedirs(undefinedPath)
+        shutil.move(config.mod_path + "\\" + u, undefinedPath)
+    print("Undefined mods moved to " + undefinedPath)
+    print("done")
