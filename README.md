@@ -1,5 +1,5 @@
 # RimWorld-redundant-mod-remover
-Remove redundant RimWorld mods using ModsConfig.xml\n
+Remove redundant RimWorld mods using ModsConfig.xml
 
 Create folder ModConfig and put ModsConfig.xml there from AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config
 
